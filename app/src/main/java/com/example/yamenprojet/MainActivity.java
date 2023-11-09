@@ -1,80 +1,104 @@
 package com.example.yamenprojet;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.yamenprojet.R;
-import com.google.firebase.Firebase;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    boolean player1Turn = true;
+    int roundCount = 0;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-public class MainActivity extends AppCompatActivity {
-
-    EditText oppositeEditText, adjacentEditText;
-
-    Firebase firebase;
-    ImageView imageView;
-    TextView resultTextView;
+    Button[][] buttons = new Button[3][3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        oppositeEditText = findViewById(R.id.oppositeEditText);
-        adjacentEditText = findViewById(R.id.adjacentEditText);
-        imageView = findViewById(R.id.imageView);
-        resultTextView = findViewById(R.id.resultTextView);
-    }
-
-
-
-    public void calculateHypotenuse(View view) {
-        double opposite = Double.parseDouble(oppositeEditText.getText().toString());
-        double adjacent = Double.parseDouble(adjacentEditText.getText().toString());
-        double hypotenuse = Math.sqrt(opposite * opposite + adjacent * adjacent);
-        resultTextView.setText(String.valueOf(hypotenuse));
-    }
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    public void selectImageFromGallery(View view) {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, REQUEST_IMAGE_CAPTURE);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                String buttonID = "button" + i + j;
+                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+                buttons[i][j] = findViewById(resID);
+                buttons[i][j].setOnClickListener(this);
+            }
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onClick(View v) {
+        if (!((Button) v).getText().toString().equals("")) {
+            return;
+        }
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
-                }
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (player1Turn) {
+            ((Button) v).setText("X");
+        } else {
+            ((Button) v).setText("O");
+        }
+
+        roundCount++;
+
+        if (checkForWin()) {
+            if (player1Turn) {
+                Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
+            }
+            resetBoard();
+        } else if (roundCount == 9) {
+            Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+            resetBoard();
+        } else {
+            player1Turn = !player1Turn;
+        }
+    }
+
+    private boolean checkForWin() {
+        String[][] field = new String[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                field[i][j] = buttons[i][j].getText().toString();
             }
         }
+
+        for (int i = 0; i < 3; i++) {
+            if (field[i][0].equals(field[i][1])
+                    && field[i][0].equals(field[i][2])
+                    && !field[i][0].equals("")) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (field[0][i].equals(field[1][i])
+                    && field[0][i].equals(field[2][i])
+                    && !field[0][i].equals("")) {
+                return true;
+            }
+        }
+
+        if (field[0][0].equals(field[1][1])
+                && field[0][0].equals(field[2][2])
+                && !field[0][0].equals("")) {
+            return true;
+        }
+
+        return field[0][2].equals(field[1][1])
+                && field[0][2].equals(field[2][0])
+                && !field[0][2].equals("");
+    }
+
+    private void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setText("");
+            }
+        }
+        roundCount = 0;
+        player1Turn = true;
     }
 }

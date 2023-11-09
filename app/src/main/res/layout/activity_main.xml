@@ -1,49 +1,79 @@
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/oppositeEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="الجانب المقابل" />
-
-    <EditText
-        android:id="@+id/adjacentEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:hint="الجانب المجاور" />
-
-
-
-    <Button
-        android:id="@+id/calculateButton"
+    <GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="احسب الوتر"
-        android:onClick="calculateHypotenuse" />
+        android:layout_centerInParent="true"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        <Button
+            android:id="@+id/button00"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="selectImageFromGallery"
-            android:src="@drawable/baseline_add_a_photo_200" />
-    </LinearLayout>
-</ScrollView>
+        <Button
+            android:id="@+id/button01"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button02"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button11"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button12"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button20"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button21"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button22"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="onButtonClick"
+            android:textSize="30sp" />
+    </GridLayout>
+</RelativeLayout>
